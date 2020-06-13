@@ -1,4 +1,14 @@
-# Question 01
+--- 
+title: "Assignment Part 02"
+author: "Chithmi Patabandi (219113625)"
+theme: cosmo
+output: 
+html_document: default
+---
+# Github link:"https://github.com/chithpatabandi/SLE712.git" 
+
+
+## Question 01: 
 
 # Prerequisite the libraries
 library("seqinr")

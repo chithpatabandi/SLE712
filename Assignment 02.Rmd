@@ -7,7 +7,6 @@ html_document: default
 ---
 # Github link:"https://github.com/chithpatabandi/SLE712.git" 
 
-
 ## Question 01: 
 
 # Prerequisite the libraries

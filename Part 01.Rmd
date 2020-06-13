@@ -1,0 +1,152 @@
+--- 
+title: "Assignment Part 01"
+author: "Chithmi Patabandi (219113625)"
+theme: cosmo
+output: 
+html_document: default
+---
+# Github link:"https://github.com/chithpatabandi/SLE712.git" 
+
+
+## Question 01: Download the data and read into R
+
+Here I am using the 'download.file()' command to obtain the dataset then reading it in to R. It is very important to set 'header=TRUE' and 'row.names=1', so that the data is formatted properly. Here I gave stringsAsFactors = FALSE because usually in R, strings are read by default as factors. Factors are set when the data-frame is created (or file loaded). Only stings present at that time will become factors. If you try and assign any other value to that column, and it's not in the list of factor strings, it will provide an error. Therefore we use stringAsFactors = FALSE, if we are planning to change the type of strings in our data frame. 
+
+```{r,chunk1,echo=TRUE}
+
+
+# Download the data
+
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part1_files/gene_expression.tsv", destfile = "gene_expression.tsv")
+
+x<- read.table("gene_expression.tsv")
+head(x)
+str(x)
+x<- read.table("gene_expression.tsv", header = TRUE)
+head(x)
+str(x)
+x<- read.table("gene_expression.tsv", header = TRUE, stringsAsFactors = FALSE)
+head(x)
+str(x)
+# Read into R making sure the 1st column is set as the row names and headers are recognised.
+x<- read.table("gene_expression.tsv", header = TRUE, stringsAsFactors = FALSE, row.names = 1)
+
+
+# In here, 'head()' command is used to look at the first 6 lines of the dataframe and then use 'str()' command to check the structure to make sure the contents are recognised as numeric.
+
+# to check the data set has been imported properly
+head(x)
+
+# to check the data structure
+str(x)
+```
+
+## Question 2: Table of mean values
+
+Here I have made a new column with mean values using the 'mean()' command. The $ operator uses a name to perform the extraction as in anObject$aName. Therefore it enables one to extract items from a list based on their names. In here, I used  
+
+```{r,chunk2,echo=TRUE}
+str(x)
+x$mean <- (x$SRR5150592+x$SRR5150593)/2
+rowMeans(x)
+x$mean <- (x$SRR5150592+x$SRR5150593)/2
+head(x)
+```
+
+## Question 3: 10 genes with the highest mean expression
+
+In Question 3, I have used 'order( )' command to get the 10 genes which has the highest mean expression. To sort a data frame in R studio we use the order( ) command. By default, sorting is in ascending order in R studio. Therefore prepend the sorting variable by a minus sign to get desending order.
+
+```{r,chunk3,echo=TRUE}
+order(x$mean)
+order(-x$mean)
+x[order(-x$mean),]
+y <- x[order(-x$mean),]
+head(y,10)
+```
+## Question 4: Determination the number of genes with a mean <10
+
+In question 4, I have made a subset using the 'subset()' function to determine the number of genes with a mean < 10. R has powerful indexing features for accessing object elements. 'subset()' function can be used to select and exclude variables and observations. 'subset()' command snippets demonstrate ways to keep or delete variables and observations and to take random samples from a dataset. 
+The function nrow in R has the form nrow(dataset). This will return the number of rows in the data set. This replaces the need for complicated solutions such as iterating across the elements to count them.In here, nrow in R shows that this data set has 43124 genes which has mean value less than 10 and that was without opening it up and counting them. 
+
+```{r,chunk4,echo=TRUE}
+
+filtered<- subset(x, mean < 10)
+nrow(filtered)
+```
+# Question 5: Histogram plot of the mean values
+
+
+
+```{r,chunk5,echo=TRUE}
+
+hist(x$mean) 
+hist(x$mean,breaks=30)
+hist(x$mean, main = "Histogram for Mean values", xlab = "Mean value", border = "red", col = "black", breaks = 30, xlim =c(0,50000))
+```
+
+# Question 6: Download the “growth_data.csv” file and read into R
+
+The 'download.file()' command is used to obtain the dataset then read it in to R. It is very important to set 'header=TRUE', so that the data is formatted properly. In here also, like question 1, 'head()' command is used to look at the first 6 lines of the dataframe and then use 'str()' command to check the structure to make sure the contents are recognised as numeric. using the 'colnames()' command I was able to make column names for the data obtained from the downloaded file. 
+```{r,chunk6,echo=TRUE}
+
+download.file("https://raw.githubusercontent.com/markziemann/SLE712_files/master/bioinfo_asst3_part1_files/growth_data.csv", destfile = "growth_data.csv")
+treesgrowth <- read.table("growth_data.csv", sep = ",", header = TRUE)
+treesgrowth <- read.table("growth_data.csv", sep = ",", header = TRUE, stringsAsFactors = FALSE)
+head(treesgrowth)
+str(treesgrowth)
+colnames(treesgrowth)
+```
+
+# Question 7: The mean and standard deviation of tree circumference at the start and end of the study 
+
+Here I have obtained two subset of data for tree circumference at the start and end of the study and laballed as 'ne' and 'sw'. (ne = northwest and sw = southwest). Then I calculated the mean and standard deviation of tree circumference for the subsets using 'mean' and 'sd" commands for both  start and end of the study.
+
+```{r,chunk7,echo=TRUE}
+
+ne<- subset(treesgrowth, Site =="northeast")
+head(ne)
+tail(ne)
+mean(ne$Circumf_2004_cm)
+mean(ne$Circumf_2019_cm)
+sd(ne$Circumf_2004_cm)
+sd(ne$Circumf_2019_cm)
+sw<- subset(treesgrowth, Site =="southwest")
+head(sw)
+tail(sw)
+mean(sw$Circumf_2004_cm)
+mean(sw$Circumf_2019_cm)
+sd(sw$Circumf_2004_cm)
+sd(sw$Circumf_2019_cm)
+```
+
+# Question 8: Box plot of tree circumference at the start and end of the study at both sites
+
+In order to make a boxplot, I used 'boxplot' command.Boxplots are a measure of how well distributed is the data in a data set. The boxplot() function takes in any number of numeric vectors, drawing a boxplot for each vector. 
+
+```{r,chunk8,echo=TRUE}
+boxplot(ne$Circumf_2004_cm,ne$Circumf_2019_cm,sw$Circumf_2004_cm,sw$Circumf_2019_cm, ylab= "Circumference (cm)", names = c("ne2004","ne2019","sw2004","sw2019"), main= "Growth at two plantation site at the start and end of the study")
+```
+
+# Question 9: Mean growth of plantation over the past 10 years at each site
+
+Here 'mean' command is used to determine the mean growth of plantation over the past 10 years at both sites, northeast and southwest.
+
+```{r,chunk9,echo=TRUE}
+ne$treesgrowth<-ne$Circumf_2019_cm-ne$Circumf_2009_cm
+head(ne)
+mean(ne$treesgrowth)
+
+sw$treesgrowth<-sw$Circumf_2019_cm-sw$Circumf_2009_cm
+head(sw)
+mean(sw$treesgrowth)
+```
+
+# Question 10: p-value of two plantation sites over the 10 years
+
+In question 10, t.test and wilcox.test functions were used to estimate the difference of the p-value during the past 10 years for both two sites. t-test usually used to determine whether the means of two groups are equal or difference to each other. The Wilcoxon test is a non-parametric alternative to the t-test for comparing two means. It’s particularly recommended in a situation where the data are not normally distributed.
+
+```{r,chunk10,echo=TRUE}
+t.test(sw$treesgrowth,ne$treesgrowth)
+wilcox.test(sw$treesgrowth,ne$treesgrowth)
+```

@@ -11,8 +11,11 @@ Part 02 - The motivation of this script is to enhance and develop the ability to
 
 ## Content
 Readme file in markdown
+
 Assignment part 01 answers in Rscript/Rmd/html
-Assignment part 01 answers in Rscript/Rmd/html
+
+Assignment part 02 answers in Rscript/Rmd/html
+
 
 ## Installation
 RStudio version 1.2.1335 and R version 3.6.3 
